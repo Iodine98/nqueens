@@ -1,27 +1,31 @@
+from tqdm import tqdm
+import itertools
 import numpy as np
-from chessboard import Chessboard, find_solution_nqueens_puzzle
 
-queens: int = 3
-clauses = np.zeros((0, queens), dtype=int)
+queens: int = 4
 rows = np.arange(1, queens ** 2 + 1).reshape((queens, queens))
-print(rows)
-clauses = np.vstack((clauses, rows))
-
-not_rows = -rows
-clauses = np.vstack((clauses, not_rows))
+clauses = []
+# clauses = [*rows.tolist()]
+# for i in range(queens):
+#     clauses = [*clauses, *list(map(list, (itertools.combinations(-rows[i], queens - 1))))]
 columns = rows.T
-clauses = np.vstack((clauses, columns))
-not_columns = -columns
-clauses = np.vstack((clauses, not_columns))
-diagonals = np.zeros((2 * queens, queens), dtype=int)
+# clauses = [*clauses, *columns.tolist()]
+# for j in range(queens):
+#     clauses = [*clauses, *list(map(list, (itertools.combinations(-columns[j], queens - 1))))]
 offset_range = range(-queens + 2, queens - 1)
-
-for i in offset_range:
+for i in tqdm(offset_range, desc="diagonals"):
     j = i + queens - 2
-    diagonal = np.diag(rows, i)
-    diagonals[j, :diagonal.shape[0]] = diagonal
-    flipped_diagonal = np.diag(np.fliplr(rows), i)
-    diagonals[j + queens, :flipped_diagonal.shape[0]] = flipped_diagonal
-clauses = np.vstack()
+    diagonal = -np.diag(rows, i)
+    clauses = [*clauses, *list(map(list, (itertools.combinations(diagonal, queens - 1))))]
+    flipped_diagonal = -np.diag(np.fliplr(rows), i)
+    clauses = [*clauses, *list(map(list, (itertools.combinations(flipped_diagonal, queens - 1))))]
+print(clauses)
 
-np.savetxt('rows.txt', rows, fmt='%d', delimiter=' ')
+# clause_list = [[*filter(lambda x: x != 0, clause), 0] for clause in tqdm(clause_list)]
+# with open("clauses.cnf", 'w') as file:
+#     for clause in clause_list:
+#         clause_str = ""
+#         for literal in clause:
+#             clause_str += str(literal) + " "
+#         clause_str += "\n"
+#         file.write(clause_str)
