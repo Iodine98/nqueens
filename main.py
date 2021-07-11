@@ -1,17 +1,20 @@
 from typing import Optional
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import time
 from tqdm import tqdm
-from chessboard import find_solution_nqueens_puzzle
+from chessboard import find_solution_nqueens_puzzle, find_solution_nqueens_puzzle_collision_method, OldChessboard
 
 
 def run_loop(max_number, run_fn):
-    x_axis = list(range(4, max_number, 4))
+    x_axis = list(range(5, max_number + 1, 5))
     time_elapsed = []
     for initial_queens in tqdm(x_axis):
         time_elapsed.append(run_fn(initial_queens))
+    fig = plt.figure()
+    subpl = fig.add_subplot()
+    subpl.set_xlabel('number of queens')
+    subpl.set_ylabel('time in seconds')
     plt.plot(x_axis, time_elapsed)
     plt.show()
 
@@ -30,4 +33,14 @@ def run_old(initial_queens: int, write_to_file: Optional[str] = None, print_plac
     return b - a
 
 
-run_old(4, write_to_file='nqueens_thirty.csv')
+fig = plt.figure()
+subpl = fig.add_subplot()
+subpl.set_xlabel('number of queens')
+subpl.set_ylabel('c time')
+x_axis: [int] = [i for i in range(10, 201, 10)]
+y_axis: [float] = [*5 * [0.00], 0.01, 0.00, 0.02, 0.08, 0.08, 0.01, 0.04, 0.03, 0.21, 0.10, 0.17, 0.06, 0.33, 0.26,
+                   0.35]
+subpl.plot(x_axis, y_axis)
+plt.show()
+
+run_loop(50, run_old)
