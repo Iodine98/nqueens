@@ -37,8 +37,8 @@ fig = plt.figure()
 subpl = fig.add_subplot()
 subpl.set_xlabel('number of queens')
 subpl.set_ylabel('c time')
-x_axis: [int] = [i for i in range(10, 201, 10)]
-y_axis: [float] = [*5 * [0.00], 0.01, 0.00, 0.02, 0.08, 0.08, 0.01, 0.04, 0.03, 0.21, 0.10, 0.17, 0.06, 0.33, 0.26,
+x_axis: List[int] = [i for i in range(10, 201, 10)]
+y_axis: List[float] = [*5 * [0.00], 0.01, 0.00, 0.02, 0.08, 0.08, 0.01, 0.04, 0.03, 0.21, 0.10, 0.17, 0.06, 0.33, 0.26,
                    0.35]
 subpl.plot(x_axis, y_axis)
 plt.show()
